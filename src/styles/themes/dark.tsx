@@ -2,7 +2,7 @@ export default {
     title: 'light',
 
     colors: {
-        white: '#323232',
+        white: '#2D3138',
         background: '#212429',
         grayLine: '#DCDDE0',
         text: '#E9E9E9',

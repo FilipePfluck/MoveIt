@@ -1,7 +1,14 @@
+import Head from 'next/head'
+
 import Dashboard from '../src/Pages/Dashboard'
 
 export default function Home() {
   return (
-    <Dashboard/>  
+    <>
+      <Head>
+        <title>Move it</title>
+      </Head>
+      <Dashboard/>  
+    </>
   )
 }

@@ -10,3 +10,19 @@ export const Container = styled.div`
     display: flex;
     flex-direction: column;
 `
+
+export const Section = styled.section`
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-content: center;
+`
+
+export const Left = styled.div`
+
+`
+
+export const Right = styled.div`
+
+`
