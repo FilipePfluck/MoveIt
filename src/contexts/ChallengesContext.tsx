@@ -47,7 +47,18 @@ export function ChallengesProvider({children}){
             }
         }
     })
-    const [challengesCompleted, setChallengesCompleted] = useState(0)
+    
+    const [challengesCompleted, setChallengesCompleted] = useState(()=>{
+        if (typeof window !== "undefined"){
+            const storagedChallenges = localStorage.getItem('@MoveIt:challengesCompleted')
+
+            if(storagedChallenges){
+                return JSON.parse(storagedChallenges)
+            }else{
+                return 0
+            }
+        }
+    })
 
     const [activeChallenge, setActiveChallenge] = useState(null)
 
@@ -97,7 +108,10 @@ export function ChallengesProvider({children}){
 
         setCurrentExperience(finalExperience)
         setActiveChallenge(null)
-        setChallengesCompleted(state => state + 1)
+        setChallengesCompleted(state => {
+            localStorage.setItem('@MoveIt:challengesCompleted', JSON.stringify(state + 1))
+            return state + 1
+        })
     }
 
     const value: ContextValue = {

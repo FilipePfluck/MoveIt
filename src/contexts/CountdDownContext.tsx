@@ -8,19 +8,20 @@ interface ContextValue {
     hasFinished: boolean,
     setHasFinished: Dispatch<SetStateAction<boolean>>
     resetTimer: ()=>void,
+    initialMinutes: number
 }
 
 export const CountdDownContext = createContext({} as ContextValue)
 
 export function CountdDownsProvider({children}){
-    const minutes = 25
+    const initialMinutes = 0.1
 
-    const [time, setTime] = useState(minutes * 60)
+    const [time, setTime] = useState(initialMinutes * 60)
     const [isActive, setIsActive] = useState(false)
     const [hasFinished, setHasFinished] = useState(false)
 
     function resetTimer(){
-        setTime(minutes * 60)
+        setTime(initialMinutes * 60)
         setIsActive(false)
         setHasFinished(false)
     }
@@ -32,7 +33,7 @@ export function CountdDownsProvider({children}){
         setIsActive,
         hasFinished,
         setHasFinished,
-
+        initialMinutes,
         resetTimer
     }
 

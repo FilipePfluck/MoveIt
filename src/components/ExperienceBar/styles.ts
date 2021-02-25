@@ -20,12 +20,14 @@ export const Container = styled.header`
             height: 4px;
             border-radius: 4px;
             background-color: ${({theme})=> theme.colors.green};
+            transition: 1s;
         }
 
         span{
             position: absolute;
             top: 12px;
-            transform: translateX(-50%)
+            transform: translateX(-50%);
+            transition: 1s;
         }
     }
 

@@ -1,5 +1,7 @@
 import styled from 'styled-components'
 
+import { motion } from 'framer-motion'
+
 interface ButtonProps {
     color: 'green' | 'red'
 }
@@ -21,7 +23,7 @@ export const Container = styled.div `
 
 `   
 
-export const NotActive = styled.div`
+export const NotActive = styled(motion.div)`
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -51,7 +53,7 @@ export const NotActive = styled.div`
     }
 `
 
-export const Active = styled.div`
+export const Active = styled(motion.div)`
     height: 100%;
     display: flex;
     flex-direction: column;

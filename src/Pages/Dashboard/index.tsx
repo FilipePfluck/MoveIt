@@ -10,6 +10,7 @@ const Dashboard = () => {
     return(
         <S.Container>
             <ExperienceBar/>
+
             <S.Section>
                 <S.Left>
                     <Profile/> 

@@ -21,6 +21,7 @@ const CountDown = () => {
         setIsActive,
         hasFinished,
         setHasFinished,
+        initialMinutes
     } = useContext(CountdDownContext)
 
     const minutes = Math.floor(time / 60)
@@ -49,7 +50,7 @@ const CountDown = () => {
     const AbandonCycle = useCallback(()=>{
         clearTimeout(countdownTimeout)
         setIsActive(false)
-        setTime(25 * 60)
+        setTime(initialMinutes * 60)
     },[])
 
     return(
