@@ -28,4 +28,8 @@ export const Container = styled.header`
             transform: translateX(-50%)
         }
     }
+
+    @media(max-width: 1100px){
+        margin-bottom: 24px;
+    }
 `

@@ -1,4 +1,4 @@
-import { useContext, useMemo } from 'react'
+import { useContext, useMemo, useEffect, useState } from 'react'
 import { ChallengeContext } from '../../contexts/ChallengesContext'
 
 import * as S from './styles'
@@ -6,8 +6,10 @@ import * as S from './styles'
 const ExperienceBar = () => {
     const { currentExperience, experienceToNextLevel } = useContext(ChallengeContext)
 
-    const percentage = useMemo(()=>{
-        return currentExperience/experienceToNextLevel * 100
+    const [percentage, setPercentage] = useState(0)
+
+    useEffect(()=>{
+        setPercentage(Math.round(currentExperience/experienceToNextLevel * 100))
     },[currentExperience, experienceToNextLevel])
 
     return(

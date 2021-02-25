@@ -1,10 +1,12 @@
 import { useContext } from 'react'
 import { ChallengeContext } from '../../contexts/ChallengesContext'
+import { CountdDownContext } from '../../contexts/CountdDownContext'
 
 import * as S from './styles'
 
 const ChallengeBox = () => {
-    const {activeChallenge, resetChallenge, resetTimer} = useContext(ChallengeContext)
+    const {activeChallenge, resetChallenge, completeChallenge} = useContext(ChallengeContext)
+    const {resetTimer} = useContext(CountdDownContext)
 
     return(
         <S.Container>
@@ -24,7 +26,11 @@ const ChallengeBox = () => {
                         >
                             Falhei
                         </S.Button>
-                        <S.Button type="button" color="green">
+                        <S.Button 
+                            type="button" 
+                            color="green"
+                            onClick={()=> {completeChallenge(); resetTimer()}}
+                        >
                             Completei
                         </S.Button>
                     </footer>

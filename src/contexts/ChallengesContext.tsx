@@ -1,4 +1,4 @@
-import { createContext, useState, Dispatch, SetStateAction } from 'react'
+import { createContext, useState, Dispatch, SetStateAction, useEffect, useMemo } from 'react'
 
 import challenges from '../../challenges.json'
 
@@ -16,48 +16,88 @@ interface ContextValue {
     activeChallenge: Challenge,
     resetChallenge: ()=>void,
     experienceToNextLevel: number,
-    resetTimer: ()=>void,
-
-    time: number,
-    setTime: Dispatch<SetStateAction<number>>,
-    isActive: boolean,
-    setIsActive: Dispatch<SetStateAction<boolean>>,
-    hasFinished: boolean,
-    setHasFinished: Dispatch<SetStateAction<boolean>>
+    completeChallenge: ()=>void
 }
 
 export const ChallengeContext = createContext({} as ContextValue)
 
 
 export function ChallengesProvider({children}){
-    const minutes = 0.1
 
-    const [time, setTime] = useState(minutes * 60)
-    const [isActive, setIsActive] = useState(false)
-    const [hasFinished, setHasFinished] = useState(false)
-    const [level, setLevel] = useState(1)
-    const [currentExperience, setCurrentExperience] = useState(0)
+    const [level, setLevel] = useState(()=>{
+        if (typeof window !== "undefined"){
+            const level = localStorage.getItem('@MoveIt:level')
+
+            if(level){
+                return JSON.parse(level)
+            }else{
+                return 1
+            }
+        }
+    })
+
+    const [currentExperience, setCurrentExperience] = useState(()=>{
+        if (typeof window !== "undefined"){
+            const storagedExperience = localStorage.getItem('@MoveIt:currentExperience')
+
+            if(storagedExperience){
+                return JSON.parse(storagedExperience)
+            }else{
+                return 0
+            }
+        }
+    })
     const [challengesCompleted, setChallengesCompleted] = useState(0)
 
     const [activeChallenge, setActiveChallenge] = useState(null)
 
     const experienceToNextLevel = Math.pow((level+1) * 4, 2)
 
+    useEffect(()=>{
+        Notification.requestPermission()
+    },[])
+
     function startNewChallenge(){
         const randomChallengeIndex = Math.floor(Math.random() * challenges.length)
         const challenge = challenges[randomChallengeIndex]
 
         setActiveChallenge(challenge)
+
+        new Audio('/notificaion.mp3')
+
+        if(Notification.permission === 'granted'){
+            new Notification('Novo desafio', {
+                body: `Valendo ${challenge.amount} xp`
+            })
+        }
     }
 
     function resetChallenge(){
         setActiveChallenge(null)
     }
 
-    function resetTimer(){
-        setTime(minutes * 60)
-        setIsActive(false)
-        setHasFinished(false)
+    function completeChallenge(){
+        if(!activeChallenge){
+            return
+        }
+
+        const { amount } = activeChallenge
+
+        let finalExperience = currentExperience + amount
+
+        if(finalExperience >= experienceToNextLevel){
+            setLevel(state => {
+                localStorage.setItem('@MoveIt:level', JSON.stringify(state + 1))
+                return state + 1
+            })
+            finalExperience = finalExperience - experienceToNextLevel
+        }
+        
+        localStorage.setItem('@MoveIt:currentExperience', JSON.stringify(finalExperience))
+
+        setCurrentExperience(finalExperience)
+        setActiveChallenge(null)
+        setChallengesCompleted(state => state + 1)
     }
 
     const value: ContextValue = {
@@ -68,13 +108,7 @@ export function ChallengesProvider({children}){
         experienceToNextLevel,
         startNewChallenge,
         resetChallenge,
-        time,
-        setTime,
-        hasFinished,
-        setHasFinished, 
-        isActive,
-        setIsActive,
-        resetTimer
+        completeChallenge
     }
 
     return(
