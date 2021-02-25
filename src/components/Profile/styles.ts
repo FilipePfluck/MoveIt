@@ -31,4 +31,8 @@ export const Container = styled.div`
             }
         }
     }
+
+    @media(max-width: 800px){
+        margin-top: 48px;
+    }
 `

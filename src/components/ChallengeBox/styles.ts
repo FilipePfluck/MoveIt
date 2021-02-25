@@ -80,12 +80,22 @@ export const Active = styled.div`
         p{
             line-height: 20px;
         }
+
+        img{
+            @media(max-width: 800px){
+                margin: 24px 0;
+            }
+        }
     }
     
     footer{ 
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 16px;
+
+        @media(max-width: 800px){
+                margin-top: 24px;
+        }
     }
 `
 
