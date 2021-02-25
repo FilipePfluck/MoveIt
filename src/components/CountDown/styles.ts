@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, {css} from 'styled-components'
 
 export const Container = styled.div`
     display: flex;
@@ -55,7 +55,26 @@ export const Button = styled.button`
 
     outline: 0;
 
-    &:hover{
+    &:not(:disabled):hover{
         filter: brightness(0.8);
+    }
+
+    &:disabled{
+        background: ${({theme}) => theme.colors.white};
+        color: ${({theme}) => theme.colors.text};
+        cursor: not-allowed;
+        border-bottom: 4px solid ${({theme}) => theme.colors.green}
+    }
+
+    svg{
+        margin-left: 8px;
+    }
+`
+
+export const AbandonButton = styled(Button)`
+    background-color: ${({theme}) => theme.colors.white};
+
+    &:not(:disabled):hover{
+        background-color: ${({theme}) => theme.colors.red};
     }
 `

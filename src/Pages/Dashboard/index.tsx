@@ -4,6 +4,7 @@ import ExperienceBar from '../../components/ExperienceBar'
 import Profile from '../../components/Profile'
 import CompletedChallenges from '../../components/CompletedChallenges'
 import CountDown from '../../components/CountDown'
+import ChallengeBox from '../../components/ChallengeBox'
 
 const Dashboard = () => {
     return(
@@ -15,6 +16,9 @@ const Dashboard = () => {
                     <CompletedChallenges/>
                     <CountDown/>
                 </S.Left>
+                <S.Right>
+                    <ChallengeBox/>
+                </S.Right>
             </S.Section>
         </S.Container> 
     )
