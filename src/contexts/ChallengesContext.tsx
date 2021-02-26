@@ -16,7 +16,9 @@ interface ContextValue {
     activeChallenge: Challenge,
     resetChallenge: ()=>void,
     experienceToNextLevel: number,
-    completeChallenge: ()=>void
+    completeChallenge: ()=>void,
+    closeLevelUpModal: ()=>void
+    isLevelUpModalOpened: boolean
 }
 
 export const ChallengeContext = createContext({} as ContextValue)
@@ -62,6 +64,8 @@ export function ChallengesProvider({children}){
 
     const [activeChallenge, setActiveChallenge] = useState(null)
 
+    const [isLevelUpModalOpened, setIsLevelUpModalOpened] = useState(false)
+
     const experienceToNextLevel = Math.pow((level+1) * 4, 2)
 
     useEffect(()=>{
@@ -101,6 +105,7 @@ export function ChallengesProvider({children}){
                 localStorage.setItem('@MoveIt:level', JSON.stringify(state + 1))
                 return state + 1
             })
+            setIsLevelUpModalOpened(true)
             finalExperience = finalExperience - experienceToNextLevel
         }
         
@@ -114,6 +119,10 @@ export function ChallengesProvider({children}){
         })
     }
 
+    function closeLevelUpModal() {
+        setIsLevelUpModalOpened(false)
+    }
+
     const value: ContextValue = {
         level,
         currentExperience,
@@ -122,7 +131,9 @@ export function ChallengesProvider({children}){
         experienceToNextLevel,
         startNewChallenge,
         resetChallenge,
-        completeChallenge
+        completeChallenge,
+        isLevelUpModalOpened,
+        closeLevelUpModal
     }
 
     return(

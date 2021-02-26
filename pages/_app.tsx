@@ -8,6 +8,7 @@ import theme from '../src/styles/themes/dark'
 
 import GlobalStyle from '../src/styles/global'
 import CountDown from '../src/components/CountDown'
+import LevelUpModal from '../src/components/LevelUpModal'
 
 export default function App({ Component, pageProps }) {
   return (

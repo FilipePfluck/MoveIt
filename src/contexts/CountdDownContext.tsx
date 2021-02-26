@@ -14,7 +14,7 @@ interface ContextValue {
 export const CountdDownContext = createContext({} as ContextValue)
 
 export function CountdDownsProvider({children}){
-    const initialMinutes = 0.1
+    const initialMinutes = 25
 
     const [time, setTime] = useState(initialMinutes * 60)
     const [isActive, setIsActive] = useState(false)
