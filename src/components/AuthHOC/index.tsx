@@ -1,36 +1,61 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { NextPage } from 'next';
+
 import {useRouter} from 'next/router';
-import { getSession } from 'next-auth/client'
+import { getSession, Session, useSession } from 'next-auth/client'
+
+import dynamic from "next/dynamic";
+
+const SignIn = dynamic(() => import("../../Pages/SignIn"));
 
 const login = '/signin'; // Define your login route address.
 
+interface WrapperProps {
+  Component: NextPage,
+  LoadingComponent?: NextPage
+}
 
-export default WrappedComponent => {    
-  const {replace} = useRouter()
+interface HocProps {
+  session: Session,
+}
 
-  const hocComponent = ({ ...props }) => <WrappedComponent {...props} />;
+const WithAuth = ({Component, LoadingComponent}: WrapperProps) => {
 
-  hocComponent.getInitialProps = async (context) => {
-    const session = getSession()
+  const AuthHoc: NextPage/* <HocProps> */ = ({ /* session */ }) => {    
+    const {replace} = useRouter()
 
-    // Are you an authorized user or not?
-    if (!session) {
-      // Handle server-side and client-side rendering.
-      if (context.res) {
-        context.res?.writeHead(302, {
-          Location: login,
-        });
-        context.res?.end();
-      } else {
-        replace(login);
+    const [session, loading] = useSession()
+
+    useEffect(()=>{
+      if(!loading && !session){
+        replace('','/signin')
       }
-    } else if (WrappedComponent.getInitialProps) {
-      const wrappedProps = await WrappedComponent.getInitialProps({...context});
-      return { ...wrappedProps};
+    },[session, loading])
+
+    if(loading){
+      return <Component/>
     }
 
-    return {};
+    if(session){
+      return(
+        <Component/>
+      )
+    }else {
+      return(
+        <SignIn/>
+      )
+    }
   };
 
-  return hocComponent;
-};
+  /* AuthHoc.getInitialProps = async (context) => {
+    const session = await getSession()
+
+    return{
+      session,
+    }
+  } */
+
+  return AuthHoc
+}
+
+export default WithAuth

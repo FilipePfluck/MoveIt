@@ -14,11 +14,11 @@ const SignIn = () => {
 
     const [ session, loading ] = useSession()
 
-    /* useEffect(()=>{
+    useEffect(()=>{
         if(session){
             router.push('/')
         }
-    },[session]) */
+    },[session])
 
     return ( 
         <S.Container>

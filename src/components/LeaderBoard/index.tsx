@@ -1,11 +1,5 @@
-import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 
-import {
-    useSession, signIn, signOut, Session
-  } from 'next-auth/client'
-
-import SideBar from '../../components/SideBar'
 import ListItem from '../../components/ListItem'
 
 import * as S from './styles'
@@ -14,17 +8,7 @@ import * as S from './styles'
 const Leaderboard = () => {
     const router = useRouter()
 
-    const [ session, loading ]= useSession()
-
-    useEffect(()=>{
-        if(!loading && !session){
-            router.push('/signin')
-        }
-    },[session, loading])
-
     return (
-        <S.Wrap>
-            <SideBar/>
             <S.Container>
                 <S.Title>Leaderboard</S.Title>
                 <S.ListLabelsContainer>
@@ -40,7 +24,6 @@ const Leaderboard = () => {
                 <ListItem/>
                 <ListItem/>
             </S.Container>
-        </S.Wrap>
     )
 }
 

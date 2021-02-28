@@ -20,6 +20,9 @@ const LevelUpModal = () => {
         inactive: {
           scale: 0,
           opacity: 0,
+          transition: {
+            delay: 1
+            }
         }
     }
 
@@ -28,9 +31,14 @@ const LevelUpModal = () => {
             opacity: 1,
             transition: {
                 delay: 1
+            },
+        },
+        hidden: {
+            opcaity: 0,
+            transition: {
+                delay: 1
             }
         },
-        hidden: {opcaity: 0},
         
     }
 
@@ -45,7 +53,6 @@ const LevelUpModal = () => {
                     variants={variants}
                     initial="inactive"
                     animate="active"
-                    
                 >
                     <header>{level}</header>
 

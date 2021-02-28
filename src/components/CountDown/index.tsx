@@ -1,18 +1,12 @@
-import { useCallback, useState, useEffect, useContext, useMemo } from 'react'
+import { useContext, useMemo } from 'react'
 
 import { MdCheckCircle, MdPlayArrow, MdClose } from 'react-icons/md'
 
-import { ChallengeContext } from '../../contexts/ChallengesContext'
 import { CountdDownContext } from '../../contexts/CountdDownContext'
 
 import * as S from './styles'
 
-let countdownTimeout: NodeJS.Timeout
-
 const CountDown = () => {
-    const { 
-        startNewChallenge
-    } = useContext(ChallengeContext)
 
     const {
         time, 
@@ -21,37 +15,19 @@ const CountDown = () => {
         setIsActive,
         hasFinished,
         setHasFinished,
-        initialMinutes
+        initialMinutes,
+        AbandonCycle,
     } = useContext(CountdDownContext)
 
-    const minutes = Math.floor(time / 60)
-    const seconds = time % 60
-
     const [minuteLeft, minuteRight] = useMemo(()=>{
+        const minutes = Math.floor(time / 60)
         return String(minutes).padStart(2,'0').split('')
-    },[minutes]) 
+    },[time]) 
 
     const [secondLeft, secondRight] = useMemo(()=>{
+        const seconds = time % 60
         return String(seconds).padStart(2,'0').split('')
-    },[seconds]) 
-
-    useEffect(()=>{
-         if(isActive && time > 0){
-            countdownTimeout =  setTimeout(()=>{
-                 setTime(time - 1)
-            }, 1000)
-         }else if(isActive && time === 0){
-             startNewChallenge()
-             setHasFinished(true)
-             setIsActive(false)
-         }
-    },[isActive, time])
-
-    const AbandonCycle = useCallback(()=>{
-        clearTimeout(countdownTimeout)
-        setIsActive(false)
-        setTime(initialMinutes * 60)
-    },[])
+    },[time]) 
 
     return(
         <div>

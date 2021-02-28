@@ -1,4 +1,4 @@
-import { createContext, useState, Dispatch, SetStateAction, useEffect, useMemo } from 'react'
+import { createContext, useState, useEffect, useCallback, useMemo } from 'react'
 
 import challenges from '../../challenges.json'
 
@@ -66,13 +66,15 @@ export function ChallengesProvider({children}){
 
     const [isLevelUpModalOpened, setIsLevelUpModalOpened] = useState(false)
 
-    const experienceToNextLevel = Math.pow((level+1) * 4, 2)
+    const experienceToNextLevel = useMemo(()=>{
+        return Math.pow((level+1) * 4, 2)
+    }, [level]) 
 
     useEffect(()=>{
         Notification.requestPermission()
     },[])
 
-    function startNewChallenge(){
+    const startNewChallenge = useCallback(()=>{
         const randomChallengeIndex = Math.floor(Math.random() * challenges.length)
         const challenge = challenges[randomChallengeIndex]
 
@@ -85,13 +87,13 @@ export function ChallengesProvider({children}){
                 body: `Valendo ${challenge.amount} xp`
             })
         }
-    }
+    },[challenges])
 
-    function resetChallenge(){
+    const resetChallenge = useCallback(() => {
         setActiveChallenge(null)
-    }
+    },[])
 
-    function completeChallenge(){
+    const completeChallenge = useCallback(() => {
         if(!activeChallenge){
             return
         }
@@ -117,11 +119,11 @@ export function ChallengesProvider({children}){
             localStorage.setItem('@MoveIt:challengesCompleted', JSON.stringify(state + 1))
             return state + 1
         })
-    }
+    },[activeChallenge, currentExperience, experienceToNextLevel])
 
-    function closeLevelUpModal() {
+    const closeLevelUpModal = useCallback(() => {
         setIsLevelUpModalOpened(false)
-    }
+    }, [])
 
     const value: ContextValue = {
         level,

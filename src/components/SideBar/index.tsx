@@ -1,16 +1,22 @@
+import { Dispatch, SetStateAction, useCallback } from 'react'
 import { FiHome, FiAward, FiLogOut } from 'react-icons/fi'
 
-import { useRouter } from 'next/router'
+import Link from 'next/link'
 
-import { useSession,signOut } from 'next-auth/client'
+import { useRouter } from 'next/router'
+import { NextPage } from 'next'
+import { signOut } from 'next-auth/client'
 
 import * as S from './styles'
-import { useCallback } from 'react'
 
-const SideBar = () => {
+
+interface SideBarProps {
+    selected: string
+    setSelected: Dispatch<SetStateAction<string>>
+}
+
+const SideBar: NextPage<SideBarProps> = ({selected, setSelected}) => {
     const router = useRouter()
-
-    const [session, loading] = useSession()
 
     const handleLogOut = useCallback(()=>{
         signOut()
@@ -24,8 +30,18 @@ const SideBar = () => {
                 <FiLogOut size={28} onClick={handleLogOut}/>
             </header>
             <div>
-                <FiHome size={28} color="#5965E0"/>
-                <FiAward size={28}/>
+
+                <FiHome 
+                    size={28} 
+                    color={selected === 'dashboard' && "#5965E0"}
+                    onClick={()=>{setSelected('dashboard')}}
+                />
+                <FiAward 
+                    size={28}
+                    color={selected === 'leaderboard' && "#5965E0"}
+                    onClick={()=>{setSelected('leaderboard')}}
+                />
+
             </div>
         </S.Container>
     )
