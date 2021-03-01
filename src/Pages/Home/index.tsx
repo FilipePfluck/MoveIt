@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { GetServerSideProps, NextPage } from 'next'
-import { getSession } from 'next-auth/client'
+import { getSession, Session } from 'next-auth/client'
 
 import { PrismaClient } from '@prisma/client'
 
@@ -37,21 +37,31 @@ export const getServerSideProps: GetServerSideProps<Props> = async({req, res}) =
 
     const prisma = new PrismaClient()
 
-    const session = await getSession()
+    const session = await getSession({req})
 
     if (!session) {
         res.statusCode = 403
         return { props: { users: [] } }
-      }
+    }
 
     const users = await prisma.user.findMany()
 
-    console.log(users)
-
-    return{
-        props: {
-            users
+    if(!users){
+        return{
+            props: {
+                users: [
+                    {
+                        email: 'filipepfluck@gmail.com',
+                        image: 'asdasdasd.png',
+                        name: 'FilipePfluck', 
+                    }
+                ]
+            }
         }
+    }
+
+    return {
+        props: {users}
     }
 }
 
