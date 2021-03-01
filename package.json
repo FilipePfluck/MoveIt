@@ -7,20 +7,24 @@
     "start": "next start"
   },
   "dependencies": {
+    "@prisma/client": "^2.17.0",
     "framer-motion": "^3.7.0",
     "next": "latest",
     "next-auth": "^3.5.1",
+    "prisma": "^2.17.0",
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
     "react-icons": "^4.2.0",
     "react-is": "^16.8.0",
     "react-modal": "^3.12.1",
+    "sqlite3": "^5.0.2",
     "styled-components": "^5.0.0"
   },
   "devDependencies": {
     "@types/next-auth": "^3.1.24",
     "@types/node": "^14.14.31",
     "@types/react": "^17.0.2",
+    "@types/sqlite3": "^3.1.7",
     "babel-plugin-styled-components": "^1.8.0",
     "typescript": "^4.1.5"
   },
