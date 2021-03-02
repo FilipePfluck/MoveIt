@@ -1,6 +1,11 @@
 import * as S from './styles'
 
-const ListItem = () => {
+interface ListItemProps {
+    name: string,
+    avatar: string
+}
+
+const ListItem: React.FC<ListItemProps> = ({name, avatar}) => {
     return(
         <S.Container>
             <S.NumberContainer>
@@ -8,9 +13,9 @@ const ListItem = () => {
             </S.NumberContainer>
             <S.Content>
                 <S.User>
-                    <img src="http://github.com/diego3g.png" alt=""/>
+                    <img src={avatar} alt=""/>
                     <div>
-                        <strong>Diego Fernandes</strong>
+                        <strong>{name}</strong>
                         <div>
                             <img src="/icons/level.svg" alt="level"/>
                             <p>Level 43</p>

@@ -3,8 +3,9 @@ import { createGlobalStyle, ThemeProvider } from 'styled-components'
 
 import { Provider } from 'next-auth/client';
 
-import { ChallengeContext, ChallengesProvider } from '../src/contexts/ChallengesContext'
-import { CountdDownsProvider} from '../src/contexts/CountdDownContext'
+import { ChallengesProvider } from '../src/contexts/ChallengesContext'
+import { CountdDownsProvider } from '../src/contexts/CountdDownContext'
+import { UsersProvider } from '../src/contexts/UsersContext'
 
 import theme from '../src/styles/themes/dark'
 
@@ -18,14 +19,16 @@ export default function App({ Component, pageProps }) {
   return (
     <>
       <Provider session={session}>
-        <ChallengesProvider>
-          <CountdDownsProvider>
-            <ThemeProvider theme={theme}>
-              <GlobalStyle />
-              <Component {...pageProps} />
-            </ThemeProvider>
-          </CountdDownsProvider>
-        </ChallengesProvider>
+        <UsersProvider>
+          <ChallengesProvider>
+            <CountdDownsProvider>
+              <ThemeProvider theme={theme}>
+                <GlobalStyle />
+                <Component {...pageProps} />
+              </ThemeProvider>
+            </CountdDownsProvider>
+          </ChallengesProvider>
+        </UsersProvider>
       </Provider>
     </>
   )

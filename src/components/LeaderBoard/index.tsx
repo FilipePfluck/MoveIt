@@ -1,4 +1,6 @@
-import { useRouter } from 'next/router'
+import { useContext, useEffect } from 'react'
+
+import { UsersContext } from '../../contexts/UsersContext'
 
 import ListItem from '../../components/ListItem'
 
@@ -6,7 +8,11 @@ import * as S from './styles'
 
 
 const Leaderboard = () => {
-    const router = useRouter()
+    const { users } = useContext(UsersContext)
+
+    useEffect(()=>{
+        console.log('leaderboard', users)
+    },[users])
 
     return (
             <S.Container>
@@ -21,8 +27,11 @@ const Leaderboard = () => {
                         <span>EXPERIÊNCIA</span>
                     </div>
                 </S.ListLabelsContainer>
-                <ListItem/>
-                <ListItem/>
+                {users.map(user => {
+                    return(
+                        <ListItem name={user.name} avatar={user.image}/>
+                    )
+                })}
             </S.Container>
     )
 }

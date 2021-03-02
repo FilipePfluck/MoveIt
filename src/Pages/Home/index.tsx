@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { GetServerSideProps, NextPage } from 'next'
-import { getSession, Session } from 'next-auth/client'
 
-import { PrismaClient } from '@prisma/client'
+import WithAuthentication from '../../components/AuthHOC'
 
 import Sidebar from '../../components/SideBar'
 import Dashboard from '../../components/Dashboard'
@@ -15,12 +14,26 @@ interface Props {
     users: User[]
 }
 
-const Home: NextPage<Props> = ({users}) => {
-    const [selected, setSelected] = useState('dashboard')
+import { useEffect } from 'react'
 
-    useEffect(()=>{
-        console.log('a',users)
-    },[users])
+import { getSession, Session } from 'next-auth/client'
+
+import { PrismaClient } from '@prisma/client'
+
+
+interface Props {
+    users: User[]
+}
+
+interface RefactoredUser {
+    id: number
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
+}
+
+const Home: NextPage/* <Props> */ = (props) => {
+    const [selected, setSelected] = useState('dashboard')
 
     return(
         <S.Wrap>
@@ -31,38 +44,6 @@ const Home: NextPage<Props> = ({users}) => {
 
         </S.Wrap>
     )
-}
-
-export const getServerSideProps: GetServerSideProps<Props> = async({req, res}) => {
-
-    const prisma = new PrismaClient()
-
-    const session = await getSession({req})
-
-    if (!session) {
-        res.statusCode = 403
-        return { props: { users: [] } }
-    }
-
-    const users = await prisma.user.findMany()
-
-    if(!users){
-        return{
-            props: {
-                users: [
-                    {
-                        email: 'filipepfluck@gmail.com',
-                        image: 'asdasdasd.png',
-                        name: 'FilipePfluck', 
-                    }
-                ]
-            }
-        }
-    }
-
-    return {
-        props: {users}
-    }
 }
 
 export default Home

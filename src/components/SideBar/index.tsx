@@ -33,12 +33,12 @@ const SideBar: NextPage<SideBarProps> = ({selected, setSelected}) => {
 
                 <FiHome 
                     size={28} 
-                    color={selected === 'dashboard' && "#5965E0"}
+                    color={selected === 'dashboard' ? "#5965E0" : undefined}
                     onClick={()=>{setSelected('dashboard')}}
                 />
                 <FiAward 
                     size={28}
-                    color={selected === 'leaderboard' && "#5965E0"}
+                    color={selected === 'leaderboard' ? "#5965E0" : undefined}
                     onClick={()=>{setSelected('leaderboard')}}
                 />
 
