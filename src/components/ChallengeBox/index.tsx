@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { ChallengeContext } from '../../contexts/ChallengesContext'
 import { CountdDownContext } from '../../contexts/CountdDownContext'
 
@@ -7,7 +7,7 @@ import { motion, AnimateSharedLayout, AnimatePresence } from 'framer-motion'
 import * as S from './styles'
 
 const ChallengeBox = () => {
-    const {activeChallenge, resetChallenge, completeChallenge} = useContext(ChallengeContext)
+    const {activeChallenge, resetChallenge, completeChallenge } = useContext(ChallengeContext)
     const {resetTimer} = useContext(CountdDownContext)
 
     return(

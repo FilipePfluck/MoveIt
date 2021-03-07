@@ -29,7 +29,7 @@ const Leaderboard = () => {
                 </S.ListLabelsContainer>
                 {users.map(user => {
                     return(
-                        <ListItem name={user.name} avatar={user.image}/>
+                        <ListItem user={user}/>
                     )
                 })}
             </S.Container>

@@ -1,11 +1,16 @@
 import * as S from './styles'
 
-interface ListItemProps {
-    name: string,
-    avatar: string
+interface User {
+    name?: string,
+    image?: string
+    level?: number
 }
 
-const ListItem: React.FC<ListItemProps> = ({name, avatar}) => {
+interface ListItemProps {
+    user: User
+}
+
+const ListItem: React.FC<ListItemProps> = ({user}) => {
     return(
         <S.Container>
             <S.NumberContainer>
@@ -13,12 +18,12 @@ const ListItem: React.FC<ListItemProps> = ({name, avatar}) => {
             </S.NumberContainer>
             <S.Content>
                 <S.User>
-                    <img src={avatar} alt=""/>
+                    <img src={user.image} alt=""/>
                     <div>
-                        <strong>{name}</strong>
+                        <strong>{user.name}</strong>
                         <div>
                             <img src="/icons/level.svg" alt="level"/>
-                            <p>Level 43</p>
+                            <p>Level {user.level}</p>
                         </div>
                     </div>
                 </S.User>

@@ -5,25 +5,24 @@ import { PrismaClient } from '@prisma/client'
 
 import { UsersContext } from '../src/contexts/UsersContext'
 
+import RefactoredUser from '../src/dtos/RefactoredUser'
+
 import Home from '../src/Pages/Home'
+import { User } from 'next-auth'
 
 interface Props {
-    users: RefactoredUser[]
+    users: RefactoredUser[],
+    userId?: number,
+    currentUser?: RefactoredUser
 }
 
-interface RefactoredUser {
-    id: number
-    name?: string | null;
-    email?: string | null;
-    image?: string | null;
-}
-
-const HomePage: NextPage<Props> = ({users}) => {
-    const { setUsers } = useContext(UsersContext)
+const HomePage: NextPage<Props> = ({users,currentUser, userId}) => {
+    const { setUsers, setCurrentUser } = useContext(UsersContext)
 
     useEffect(()=>{
         setUsers(users)
-    },[users])
+        setCurrentUser(currentUser)
+    },[users, currentUser])
 
     return(
         <Home/>
@@ -41,22 +40,44 @@ export const getServerSideProps: GetServerSideProps <Props> = async({req, res}) 
         return { props: { users: [] } }
     }
 
-    const users = await prisma.user.findMany()
+        const currentUserId = session.userId
+    
+        const users = await prisma.user.findMany()
 
-    const refactoredUsers: RefactoredUser[] = users.map((u) => {
+        const currentUser = await prisma.user.findFirst({
+            where: {
+                id: currentUserId
+            }
+        })
+
+        console.log('currentUser',currentUser)
+
+        const refactoredUsers: RefactoredUser[] = users.map((u) => {
+            return {
+                id: u.id, 
+                name: u.name, 
+                email: u.email, 
+                image: u.image,
+                level: u.level
+            }
+        })
+
+        const refactoredCurrentUser: RefactoredUser = {
+            id: currentUserId,
+            email: currentUser.email,
+            name: currentUser.name,
+            image: currentUser.image,
+            level: currentUser.level
+        }
+
         return {
-            id: u.id, 
-            name: u.name, 
-            email: u.email, 
-            image: u.image
+            props: {
+                users: refactoredUsers,
+                userId: currentUserId,
+                currentUser: refactoredCurrentUser
+            }
         }
-    })
-
-    return {
-        props: {
-            users: refactoredUsers
-        }
-    }
+    
 }
 
 export default HomePage

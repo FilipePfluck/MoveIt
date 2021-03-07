@@ -22,4 +22,11 @@ const options = {
     }),
   ],
   adapter: Adapters.Prisma.Adapter({ prisma }),
+  callbacks: {
+    session: async (session, user) => {
+      const id: number = user.id
+      session.userId = id;    
+      return Promise.resolve(session);
+    }
+  }
 };

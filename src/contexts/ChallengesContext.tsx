@@ -1,6 +1,20 @@
-import { createContext, useState, useEffect, useCallback, useMemo } from 'react'
+import { createContext, useState, useEffect, useCallback, useMemo, useContext } from 'react'
+
+import {UsersContext} from './UsersContext'
+
+import api from '../serices/api'
 
 import challenges from '../../challenges.json'
+
+interface UpdateLevelProps {
+    id: number,
+    lvl: number
+}
+
+interface UpdateXpProps {
+    id: number,
+    xp: number
+}
 
 interface Challenge {
     type: 'body' | 'eye';
@@ -26,17 +40,9 @@ export const ChallengeContext = createContext({} as ContextValue)
 
 export function ChallengesProvider({children}){
 
-    const [level, setLevel] = useState(()=>{
-        if (typeof window !== "undefined"){
-            const level = localStorage.getItem('@MoveIt:level')
+    const { currentUser } = useContext(UsersContext)
 
-            if(level){
-                return JSON.parse(level)
-            }else{
-                return 1
-            }
-        }
-    })
+    const [level, setLevel] = useState(0)
 
     const [currentExperience, setCurrentExperience] = useState(()=>{
         if (typeof window !== "undefined"){
@@ -67,8 +73,22 @@ export function ChallengesProvider({children}){
     const [isLevelUpModalOpened, setIsLevelUpModalOpened] = useState(false)
 
     const experienceToNextLevel = useMemo(()=>{
-        return Math.pow((level+1) * 4, 2)
-    }, [level]) 
+        return Math.pow((currentUser ? currentUser.level+1 : 0) * 4, 2)
+    }, [currentUser]) 
+
+    const updateLevel = useCallback(({id, lvl}: UpdateLevelProps)=>{
+        api.put(`/api/users/${id}/updateLevel`, {
+            lvl
+        })
+        .then(res => console.log('updateLevel',res, id, lvl))
+    },[])
+
+    const updateXp = useCallback(({id, xp}: UpdateXpProps)=>{
+        api.put(`/api/users/${id}/updateXp`, {
+            xp
+        })
+        .then(res => console.log('updateXp',res, id, xp))
+    },[])
 
     useEffect(()=>{
         Notification.requestPermission()
@@ -104,14 +124,14 @@ export function ChallengesProvider({children}){
 
         if(finalExperience >= experienceToNextLevel){
             setLevel(state => {
-                localStorage.setItem('@MoveIt:level', JSON.stringify(state + 1))
+                updateLevel({id: currentUser.id, lvl: state + 1})
                 return state + 1
             })
             setIsLevelUpModalOpened(true)
             finalExperience = finalExperience - experienceToNextLevel
         }
         
-        localStorage.setItem('@MoveIt:currentExperience', JSON.stringify(finalExperience))
+        updateXp({id: currentUser.id, xp: finalExperience})
 
         setCurrentExperience(finalExperience)
         setActiveChallenge(null)
@@ -135,7 +155,7 @@ export function ChallengesProvider({children}){
         resetChallenge,
         completeChallenge,
         isLevelUpModalOpened,
-        closeLevelUpModal
+        closeLevelUpModal,
     }
 
     return(
