@@ -21,7 +21,7 @@ Typescript
 
 ## Como instalar 
 
-Clone o repositório na sua máquina.
+Clone o repositório rodando `git clone https://github.com/FilipePfluck/MoveIt.git` ou baixe o zip disponível no botão verde `Code`.
 <br/>Você vai precisar do node instalado na sua máquina, além do NPM ou Yarn.
 <br/>Instale as dependências com `npm install` ou `yarn`
 <br/>Rode `yarn dev` ou `npm run dev` e abra seu navegador no http://localhost:3000
