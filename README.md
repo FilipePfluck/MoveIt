@@ -16,4 +16,4 @@ Next-auth (para o login com o github)
 Prisma (para o banco de dados)
 
 ## Imagem de demonstração
-![MoveIt](/src/images/image.png)
+![MoveIt](/src/image/image.png)
