@@ -10,10 +10,10 @@ A atualização sugerida pela equipe da rocket foi adicionar login com o github 
 ## Tecnologias usadas
 
 Typescript
-React
-Next
-Next-auth (para o login com o github)
-Prisma (para o banco de dados)
+<br/>React
+<br/>Next
+<br/>Next-auth (para o login com o github)
+<br/>Prisma (para o banco de dados)
 
 ## Imagem de demonstração
 ![MoveIt](/src/image/image.png)
